@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5453160019486105427
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6930676132300909100}
+  - component: {fileID: 8086723611948857172}
+  m_Layer: 0
+  m_Name: Tower Scroller
+  m_TagString: Tower Scroller
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6930676132300909100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5453160019486105427}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.8013255, y: 0.06762382, z: -0.03854361}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8086723611948857172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5453160019486105427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0a30e4749f13b445b14f2634672684c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  towerPrefab: {fileID: 8709991617604725940, guid: dd4725b073181534a919e8d08ca32869, type: 3}
+  towers:
+  - {fileID: 21300000, guid: 8c55c2094bb5bc4438d61eaa83a6a6d5, type: 3}
+  - {fileID: 21300000, guid: 6580d3cff9790a24082f0119d2006d69, type: 3}
+  - {fileID: 21300000, guid: f90f9df02e754a94199c3c96bf859318, type: 3}
+  - {fileID: 21300000, guid: e145dcd6ad246f649b08fc704911e65a, type: 3}
+  towerScrollSpeed: 1
+  accelerationRate: 0.1
+  maximalSpeed: 4.04
+  speedMultiplier: 5
+  playerController: {fileID: -8014618784825750895, guid: 8ada42d160b580d4c835885c9644dc00, type: 3}
