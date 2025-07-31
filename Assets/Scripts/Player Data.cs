@@ -9,8 +9,8 @@ public class PlayerData
 
     public PlayerData (PlayerController player)
     {
-        recordDistance = player.recordDistance;
-        currency = player.currencySouls;
+        recordDistance = player.RecordDistance;
+        currency = player.CurrencySouls;
 
     }
 

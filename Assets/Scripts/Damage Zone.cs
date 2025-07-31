@@ -10,7 +10,7 @@ public class DamageZone : MonoBehaviour
         if (controller != null && gameObject.CompareTag("Cross"))
         {
             //Debug.Log(controller.maxPoints);
-            controller.TakingDamage(1);
+            controller.RemovePoints(1);
             //controller.rigidbody2d.AddForce(controller.move.normalized * -300.0f);
         }
         else
@@ -18,7 +18,7 @@ public class DamageZone : MonoBehaviour
         {
             //Debug.Log(controller.maxPoints);
             controller.ChangeSpeed(0.1f);
-            controller.TakingDamage(1);
+            controller.RemovePoints(1);
             //controller.rigidbody2d.AddForce(controller.move.normalized * -100.0f);
 
         }

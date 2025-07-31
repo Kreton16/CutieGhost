@@ -29,9 +29,9 @@ public class CrossSpawner : MonoBehaviour
     {
         nextSpawnTime -= Time.deltaTime;
 
-        if (playerController.ultimateActivated != ultimateWasActive)
+        if (playerController.UltimateActivated != ultimateWasActive)
         {
-            ultimateWasActive = playerController.ultimateActivated;
+            ultimateWasActive = playerController.UltimateActivated;
             // Оновлюємо інтервал для наступного спавну
             SetNextSpawnTime();
         }

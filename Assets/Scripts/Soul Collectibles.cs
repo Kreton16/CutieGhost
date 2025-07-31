@@ -11,20 +11,20 @@ public class SoulCollectibles : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        PlayerController controller = other.GetComponent<PlayerController>();
+        PlayerController playerController = other.GetComponent<PlayerController>();
 
-        if (controller != null && controller.points < controller.maxPoints && gameObject.CompareTag("Soul"))
+        if (playerController != null && playerController.points < playerController.MaxPoints && gameObject.CompareTag("Soul"))
         {
             SoundManager.Instance.PlaySound3D("Collectibles", transform.position);
-            controller.ChangePoints(1);
+            playerController.AddPoints(1);
             Destroy(gameObject);
         }
         else
-            if (controller != null && gameObject.CompareTag("Currency"))
+            if (playerController != null && gameObject.CompareTag("Currency"))
         {
             //Debug.Log(currencySoul);
             SoundManager.Instance.PlaySound3D("Collectibles", transform.position);
-            controller.currencySouls += 1;
+            playerController.AddCurrency(1);
             Destroy(gameObject);
         }
     }

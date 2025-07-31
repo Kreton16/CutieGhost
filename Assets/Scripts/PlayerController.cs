@@ -10,44 +10,55 @@ public class PlayerController : MonoBehaviour
 {
 
     // Variables for speed system
-    public InputAction MoveAction;
-    public Rigidbody2D rigidbody2d;
-    public float speed;
+    [Header("Speed Settings")]
+    [SerializeField] private InputAction MoveAction;
+    [SerializeField] private Rigidbody2D rigidbody2d;
+    [SerializeField] private float speed;
     private float previousSpeed;
-    public Vector2 move;
+    [SerializeField] private Vector2 move;
     Vector2 previousMoveDirection;
 
     // Variables for ultimate skill
-    public InputAction Ultimate;
+    [Header("Ultimate Settings")]
+    [SerializeField] private InputAction Ultimate;
     private float holdTime = 1.0f; // Час утримання для активації Ultimate
     private float holdTimer;
     private bool isChargingUltimate = false;
-    public bool ultimateActivated;
-    public int ultimateCost;
-    public float ultimateDuration;
+    [SerializeField] private bool ultimateActivated;
+    [SerializeField] private int ultimateCost;
+    [SerializeField] private float ultimateDuration;
+
+    public bool UltimateActivated => ultimateActivated;
+    public float UltimateDuration => ultimateDuration;
 
     // Variables for slow down
-    public float timeSlowed;
+    [SerializeField] private float timeSlowed;
 
     // Variables for soul system
-    public int maxPoints = 100;
-    int currentPoints;
+    [Header("Collectibles Settings")]
+    [SerializeField] private int maxPoints = 100;
+    [SerializeField] private int currentPoints;
     public int points { get { return currentPoints; } }
-    public int currencySouls;
+    [SerializeField] private int currencySouls;
     private string currentState;
+    public int MaxPoints => maxPoints;
+    public int CurrencySouls => currencySouls;
 
     // Variables related to temporary invincibility
-    public float timeInvincible;
-    bool isInvincible;
-    float damageCooldown;
+    [Header("Invincibility Settings")]
+    [SerializeField] private float timeInvincible;
+    private bool isInvincible;
+    private float damageCooldown;
 
     // Variables for distance counter and display
+    [Header("UI Settings")]
     private float distance;
-    public float recordDistance;
+    [SerializeField] private float recordDistance;
     TowerScroller towerController;
-    public GameObject otherObject;
-    public GameOverScreen GameOverScreen;
-    public TextMeshProUGUI currentDistance;
+    [SerializeField] private GameObject otherObject;
+    [SerializeField] private GameOverScreen GameOverScreen;
+    [SerializeField] private TextMeshProUGUI currentDistance;
+    public float RecordDistance => recordDistance;
 
     // Animation
     Animator animator;
@@ -207,27 +218,50 @@ public class PlayerController : MonoBehaviour
         currentDistance.text = "Distance: " + score.ToString() + $" ({recordDistance})";
     }
 
-    public void TakingDamage(int damage)
+    public void AddPoints(int amount)
     {
-        if (isInvincible || ultimateActivated)
+        if (amount <= 0)
         {
+            Debug.LogWarning("AddPoints отримав недійсне значення.");
             return;
         }
-        isInvincible = true;
-        damageCooldown = timeInvincible;
-        ChangePoints(-damage);
-        SoundManager.Instance.PlaySound3D("Damage", transform.position);
 
-        string damageAnim = "Damage_" + currentState;
-        animator.Play(damageAnim);
-
-    }
-
-    public void ChangePoints(int amount)
-    {
         currentPoints = Mathf.Clamp(currentPoints + amount, 0, maxPoints);
         UpdateGhostState();
         Debug.Log(currentPoints + "/" + maxPoints);
+    }
+
+    public void RemovePoints(int amount)
+    {
+        if (amount <= 0)
+        {
+            Debug.LogWarning("RemovePoints отримав недійсне значення.");
+            return;
+        }
+
+        if (isInvincible || ultimateActivated) return;
+
+        isInvincible = true;
+        damageCooldown = timeInvincible;
+        currentPoints = Mathf.Clamp(currentPoints - amount, 0, maxPoints);
+
+        SoundManager.Instance.PlaySound3D("Damage", transform.position);
+        animator.Play("Damage_" + currentState);
+
+        UpdateGhostState();
+        Debug.Log(currentPoints + "/" + maxPoints);
+    }
+
+    public void AddCurrency(int amount)
+    {
+        if (amount <= 0)
+        {
+            Debug.LogWarning("AddCurrency отримав недійсне значення.");
+            return;
+        }
+
+        currencySouls += amount;
+        Debug.Log(currencySouls);
     }
 
     public void UpdateGhostState()
@@ -262,7 +296,7 @@ public class PlayerController : MonoBehaviour
             isChargingUltimate = true;
             ultimateActivated = false;
             holdTimer = 0f;
-            SoundManager.Instance.PlaySound3D("UltCharge", transform.position);
+            SoundManager.Instance.PlaySound3D("UltCharge", transform.position, true);
         }
         else
         {
@@ -272,13 +306,13 @@ public class PlayerController : MonoBehaviour
 
     void ChargeUltimate()
     {
-        if (isChargingUltimate && !ultimateActivated && ultimateCost < points)
+        if (isChargingUltimate && !ultimateActivated && ultimateCost < points && !isInvincible)
         {
             holdTimer += Time.deltaTime;
 
             if (holdTimer >= holdTime)
             {
-                ChangePoints(-ultimateCost);
+                RemovePoints(ultimateCost);
                 ActivateUltimate();
                 isChargingUltimate = false;
                 return;
@@ -297,7 +331,6 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Ultimate Activated!");
             SoundManager.Instance.StopSound("UltCharge");
             SoundManager.Instance.PlaySound3D("UltActive", transform.position, true);
-            Debug.Log("Ultimate Activated!");
             ultimateActivated = true;
             CostChange();
             towerController.ChangeSpeed();

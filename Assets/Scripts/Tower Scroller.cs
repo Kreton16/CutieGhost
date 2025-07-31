@@ -97,7 +97,7 @@ public class TowerScroller : MonoBehaviour
             Debug.Log("AHUETb");
             previousSpeed = towerScrollSpeed;
             towerScrollSpeed *= speedMultiplier;
-            Invoke(nameof(TurnUltimateOff),playerController.ultimateDuration);
+            Invoke(nameof(TurnUltimateOff),playerController.UltimateDuration);
     }
 
     void TurnUltimateOff()
