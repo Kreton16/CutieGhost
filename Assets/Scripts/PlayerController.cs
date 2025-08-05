@@ -18,18 +18,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 move;
     Vector2 previousMoveDirection;
 
-    // Variables for ultimate skill
     [Header("Ultimate Settings")]
-    [SerializeField] private InputAction Ultimate;
-    private float holdTime = 1.0f; // Час утримання для активації Ultimate
-    private float holdTimer;
-    private bool isChargingUltimate = false;
-    [SerializeField] private bool ultimateActivated;
-    [SerializeField] private int ultimateCost;
-    [SerializeField] private float ultimateDuration;
-
-    public bool UltimateActivated => ultimateActivated;
-    public float UltimateDuration => ultimateDuration;
+    [SerializeField] private PlayerUltimate playerUltimate;
 
     // Variables for slow down
     [SerializeField] private float timeSlowed;
@@ -49,13 +39,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float timeInvincible;
     private bool isInvincible;
     private float damageCooldown;
+    public bool IsInvincible => isInvincible;
 
     // Variables for distance counter and display
     [Header("UI Settings")]
     private float distance;
     [SerializeField] private float recordDistance;
     TowerScroller towerController;
-    [SerializeField] private GameObject otherObject;
+    [SerializeField] private GameObject towerScroller;
     [SerializeField] private GameOverScreen GameOverScreen;
     [SerializeField] private TextMeshProUGUI currentDistance;
     public float RecordDistance => recordDistance;
@@ -71,12 +62,8 @@ public class PlayerController : MonoBehaviour
         previousSpeed = speed;
         //Debug.Log("Previous speed: " + previousSpeed);
 
-        towerController = otherObject.GetComponent<TowerScroller>();
+        towerController = towerScroller.GetComponent<TowerScroller>();
         StartCoroutine(DistanceCounter());
-
-        Ultimate.Enable();
-        Ultimate.started += ctx => StartUltimate(); // Початок утримання
-        Ultimate.canceled += ctx => StopUltimate(); // Відпускання кнопки
 
         MoveAction.Enable();
         rigidbody2d = GetComponent<Rigidbody2D>();
@@ -134,11 +121,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             Debug.Log("Record Distance: " + recordDistance);
-        }
-
-        if (isChargingUltimate)
-        {
-            ChargeUltimate();
         }
 
         //Restart if there're no souls
@@ -239,7 +221,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (isInvincible || ultimateActivated) return;
+        if (isInvincible || playerUltimate.UltimateActivated) return;
 
         isInvincible = true;
         damageCooldown = timeInvincible;
@@ -287,87 +269,14 @@ public class PlayerController : MonoBehaviour
         //Debug.Log(animator.GetInteger("SoulState"));
 
     }
-     
-    void StartUltimate()
-    {
-        if (ultimateCost < points)
-        {
-            Debug.Log("Ultimate Charge Started!");
-            isChargingUltimate = true;
-            ultimateActivated = false;
-            holdTimer = 0f;
-            SoundManager.Instance.PlaySound3D("UltCharge", transform.position, true);
-        }
-        else
-        {
-            Debug.Log("Not enough souls!");
-        }
-    }
-
-    void ChargeUltimate()
-    {
-        if (isChargingUltimate && !ultimateActivated && ultimateCost < points && !isInvincible)
-        {
-            holdTimer += Time.deltaTime;
-
-            if (holdTimer >= holdTime)
-            {
-                RemovePoints(ultimateCost);
-                ActivateUltimate();
-                isChargingUltimate = false;
-                return;
-            }
-        }
-        else 
-        {
-            StopUltimate();
-        }
-    }
-
-    void ActivateUltimate()
-    {
-        if (isChargingUltimate && holdTimer >= holdTime)
-        {
-            Debug.Log("Ultimate Activated!");
-            SoundManager.Instance.StopSound("UltCharge");
-            SoundManager.Instance.PlaySound3D("UltActive", transform.position, true);
-            ultimateActivated = true;
-            CostChange();
-            towerController.ChangeSpeed();
-            StartCoroutine("TurnUltimateOff");
-        }
-    }
-
-    void StopUltimate()
-    {
-        if(!ultimateActivated && isChargingUltimate)
-        {
-            Debug.Log("Ultimate canceled - hold longer!");
-            SoundManager.Instance.StopSound("UltCharge");
-        }
-
-        isChargingUltimate = false;
-    }
-
-    void CostChange()
-    {
-        ultimateCost = Mathf.Clamp(ultimateCost + 20, 0, maxPoints);
-    }
 
     public void ChangeSpeed(float multiplier)
     {
-        // Ultimate speed boost
-        if (multiplier > 1.0f && ultimateActivated)
-        {
-            speed *= multiplier; // Збільшуємо швидкість у n разів
-            Invoke(nameof(RestoreSpeed), ultimateDuration); // Викликаємо відновлення швидкості через деякий час
-            //StartCoroutine("TurnUltimateOff");
-        }
 
         // Damage speed decrease
         if (multiplier < 1.0f)
         {
-            if (isInvincible)
+            if (isInvincible || playerUltimate.UltimateActivated)
             {
                 return;
             }
@@ -380,13 +289,6 @@ public class PlayerController : MonoBehaviour
     void RestoreSpeed()
     {
         speed = previousSpeed; // Відновлення швидкості
-    }
-
-    IEnumerator TurnUltimateOff()
-    {
-        yield return new WaitForSeconds(ultimateDuration);
-        ultimateActivated = false;
-        SoundManager.Instance.StopSound("UltActive");
     }
 
 }

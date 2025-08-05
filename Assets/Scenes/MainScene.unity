@@ -256,12 +256,17 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!1 &377305776 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6380279764827511343, guid: 8ada42d160b580d4c835885c9644dc00, type: 3}
+  m_PrefabInstance: {fileID: 7323916339969536192}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &411503585 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -8014618784825750895, guid: 8ada42d160b580d4c835885c9644dc00, type: 3}
   m_PrefabInstance: {fileID: 7323916339969536192}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 377305776}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b400b22cd6b25dd45add1ec12cd922dc, type: 3}
@@ -627,6 +632,40 @@ Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: -1308632608659690604, guid: 8ada42d160b580d4c835885c9644dc00, type: 3}
   m_PrefabInstance: {fileID: 7323916339969536192}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1342570104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377305776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 083bb6eaf8c8cfd4295a4d658dd586f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 411503585}
+  towerScroller: {fileID: 2135517030}
+  ultimateAction:
+    m_Name: Ultimate
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 23d98cb0-d9eb-41cb-aca7-ef6b6573a2ca
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: b9cdc2f5-582b-48ba-8f0c-19286c863db9
+      m_Path: <Keyboard>/space
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Ultimate
+      m_Flags: 0
+    m_Flags: 0
+  ultimateCost: 30
+  ultimateDuration: 6
+  holdTime: 1.5
 --- !u!1 &1465742467
 GameObject:
   m_ObjectHideFlags: 0
@@ -991,6 +1030,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5453160019486105427, guid: 7b08f7f1d927bf842a8b1929d22cc648, type: 3}
   m_PrefabInstance: {fileID: 5574525880644767945}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2135517030 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8086723611948857172, guid: 7b08f7f1d927bf842a8b1929d22cc648, type: 3}
+  m_PrefabInstance: {fileID: 5574525880644767945}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135517029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0a30e4749f13b445b14f2634672684c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &891681761348603447
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2012,6 +2062,10 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: -8014618784825750895, guid: 8ada42d160b580d4c835885c9644dc00, type: 3}
+      propertyPath: timeSlowed
+      value: 1.6
+      objectReference: {fileID: 0}
+    - target: {fileID: -8014618784825750895, guid: 8ada42d160b580d4c835885c9644dc00, type: 3}
       propertyPath: otherObject
       value: 
       objectReference: {fileID: 2135517029}
@@ -2024,9 +2078,17 @@ PrefabInstance:
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: -8014618784825750895, guid: 8ada42d160b580d4c835885c9644dc00, type: 3}
+      propertyPath: towerScroller
+      value: 
+      objectReference: {fileID: 2135517029}
+    - target: {fileID: -8014618784825750895, guid: 8ada42d160b580d4c835885c9644dc00, type: 3}
       propertyPath: GameOverScreen
       value: 
       objectReference: {fileID: 2120525582}
+    - target: {fileID: -8014618784825750895, guid: 8ada42d160b580d4c835885c9644dc00, type: 3}
+      propertyPath: playerUltimate
+      value: 
+      objectReference: {fileID: 1342570104}
     - target: {fileID: -8014618784825750895, guid: 8ada42d160b580d4c835885c9644dc00, type: 3}
       propertyPath: currentDistance
       value: 
@@ -2086,7 +2148,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6380279764827511343, guid: 8ada42d160b580d4c835885c9644dc00, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 1342570104}
   m_SourcePrefab: {fileID: 100100000, guid: 8ada42d160b580d4c835885c9644dc00, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

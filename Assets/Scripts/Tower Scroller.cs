@@ -13,13 +13,14 @@ public class TowerScroller : MonoBehaviour
     private float previousSpeed;
     public float speedMultiplier = 5.0f;
 
-    public PlayerController playerController;
+    private PlayerUltimate playerUltimate;
     private GameObject currentZone;
     private GameObject nextZone;
     private Sprite lastUsedSprite;
 
     void Start()
     {
+        playerUltimate = GameObject.FindWithTag("Player").GetComponent<PlayerUltimate>();
         // Створюємо тільки дві зони
         currentZone = Instantiate(towerPrefab, Vector3.zero, Quaternion.identity);
         nextZone = Instantiate(towerPrefab, new Vector3(0, 10.8f, 0), Quaternion.identity);
@@ -94,10 +95,10 @@ public class TowerScroller : MonoBehaviour
 
     public void ChangeSpeed()
     {
-            Debug.Log("AHUETb");
-            previousSpeed = towerScrollSpeed;
-            towerScrollSpeed *= speedMultiplier;
-            Invoke(nameof(TurnUltimateOff),playerController.UltimateDuration);
+        Debug.Log("AHUETb");
+        previousSpeed = towerScrollSpeed;
+        towerScrollSpeed *= speedMultiplier;
+        Invoke(nameof(TurnUltimateOff), playerUltimate.UltimateDuration);
     }
 
     void TurnUltimateOff()

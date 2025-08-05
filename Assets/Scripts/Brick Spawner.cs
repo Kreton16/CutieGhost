@@ -11,12 +11,12 @@ public class BrickSpawner : MonoBehaviour
     private bool ultimateWasActive = false;
     private float nextSpawnTime;         // Час до наступного спавну
 
-    private PlayerController playerController;
+    private PlayerUltimate playerUltimate;
     private TowerScroller towerController;
 
     void Start()
     {
-        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        playerUltimate = GameObject.FindWithTag("Player").GetComponent<PlayerUltimate>();
         towerController = GameObject.FindWithTag("Tower Scroller").GetComponent<TowerScroller>();
         // Встановлюємо перший випадковий інтервал
         nextSpawnTime = Random.Range(minSpawnInterval, maxSpawnInterval);
@@ -26,9 +26,9 @@ public class BrickSpawner : MonoBehaviour
     {
         nextSpawnTime -= Time.deltaTime;
 
-        if (playerController.UltimateActivated != ultimateWasActive)
+        if (playerUltimate.UltimateActivated != ultimateWasActive)
         {
-            ultimateWasActive = playerController.UltimateActivated;
+            ultimateWasActive = playerUltimate.UltimateActivated;
             // Оновлюємо інтервал для наступного спавну
             SetNextSpawnTime();
         }
