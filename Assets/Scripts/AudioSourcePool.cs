@@ -6,12 +6,12 @@ public class AudioSourcePool : MonoBehaviour
     public static AudioSourcePool Instance;
 
     [Header("Settings")]
-    public int initialPoolSize = 10;
-    public AudioClip defaultClip; // можна залишити пустим
-    public bool autoExpand = true;
+    [SerializeField] private int initialPoolSize = 10;
+    [SerializeField] private AudioClip defaultClip; // можна залишити пустим
+    [SerializeField] private bool autoExpand = true;
 
     [Header("Prefab")]
-    public GameObject audioSourcePrefab; // або генеруємо динамічно
+    [SerializeField] private GameObject audioSourcePrefab; // або генеруємо динамічно
 
     private Queue<AudioSource> pool = new Queue<AudioSource>();
 

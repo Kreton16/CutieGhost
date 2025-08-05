@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
-    public AudioMixer audioMixer;
+    [SerializeField] private AudioMixer audioMixer;
 
-    public Slider musicSlider;
-    public Slider sfxSlider;
+    [SerializeField] private Slider musicSlider;
+    [SerializeField] private Slider sfxSlider;
 
     private void Start()
     {

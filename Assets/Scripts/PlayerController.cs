@@ -287,7 +287,7 @@ public class PlayerController : MonoBehaviour
         //Debug.Log(animator.GetInteger("SoulState"));
 
     }
-
+     
     void StartUltimate()
     {
         if (ultimateCost < points)

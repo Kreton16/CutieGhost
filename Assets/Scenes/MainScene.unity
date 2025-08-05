@@ -345,7 +345,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -2
   m_Sprite: {fileID: 8122817492127302832, guid: 871c4b6c1ba4aff4bb0e105987c6b305, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -856,6 +856,10 @@ PrefabInstance:
     - target: {fileID: 8709991617604725940, guid: dd4725b073181534a919e8d08ca32869, type: 3}
       propertyPath: m_Name
       value: Tower
+      objectReference: {fileID: 0}
+    - target: {fileID: 8709991617604725940, guid: dd4725b073181534a919e8d08ca32869, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2029,7 +2033,7 @@ PrefabInstance:
       objectReference: {fileID: 1759998651}
     - target: {fileID: -8014618784825750895, guid: 8ada42d160b580d4c835885c9644dc00, type: 3}
       propertyPath: ultimateDuration
-      value: 15
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3263021682845001655, guid: 8ada42d160b580d4c835885c9644dc00, type: 3}
       propertyPath: m_LocalPosition.x
