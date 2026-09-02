@@ -49,7 +49,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -87,7 +87,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -247,7 +247,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      GHOST MOVEMENT GOIND DOWN (LOWEST FORM)_0: -5564335921942655309
+      GHOST MOVEMENT GOIND DOWN (LOWEST FORM)_1: 7718391106502506098
+      GHOST MOVEMENT GOIND DOWN (LOWEST FORM)_2: 5587926971236391808
+      GHOST MOVEMENT GOIND DOWN (LOWEST FORM)_3: -4110314325691106489
+      GHOST MOVEMENT GOIND DOWN (LOWEST FORM)_4: 3463155256779086550
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

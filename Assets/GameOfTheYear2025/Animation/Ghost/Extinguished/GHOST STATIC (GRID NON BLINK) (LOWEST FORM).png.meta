@@ -46,7 +46,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -84,7 +84,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -222,7 +222,11 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      GHOST STATIC (GRID NON BLINK) (LOWEST FORM)_0: 7576840184739412652
+      GHOST STATIC (GRID NON BLINK) (LOWEST FORM)_1: -7539340407301617366
+      GHOST STATIC (GRID NON BLINK) (LOWEST FORM)_2: 2685126408973681800
+      GHOST STATIC (GRID NON BLINK) (LOWEST FORM)_3: -6172726974898539290
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

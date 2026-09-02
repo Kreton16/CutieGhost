@@ -49,7 +49,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -87,7 +87,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -247,7 +247,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      GHOST MOVEMENT rizzing up (LOWEST FORM)_0: -4655290051963660105
+      GHOST MOVEMENT rizzing up (LOWEST FORM)_1: 667787277663435860
+      GHOST MOVEMENT rizzing up (LOWEST FORM)_2: 5554775530968866049
+      GHOST MOVEMENT rizzing up (LOWEST FORM)_3: -7388108755422026252
+      GHOST MOVEMENT rizzing up (LOWEST FORM)_4: -9032912258015242566
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

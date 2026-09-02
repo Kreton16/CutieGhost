@@ -1,78 +1,24 @@
 using UnityEngine;
 
-public class CrossSpawner : MonoBehaviour
+public class CrossSpawner : BaseSpawner
 {
-    public GameObject obstaclePrefab;  // Префаб перешкоди
-    public float minSpawnInterval = 1.0f; // Мінімальний інтервал спавну
-    public float maxSpawnInterval = 3.0f; // Максимальний інтервал спавну
-    public float zoneWidth = 6.4f;        // Ширина ігрової зони
-    public float spawnOffsetY = 15.0f;   // Відстань спавну вище екрану
-
-    public LayerMask collectiblesLayer; // Вказати шар хрестів
-    public float checkRadius = 3.8f; // Радіус перевірки
-
-    private bool ultimateWasActive = false;
-    private float nextSpawnTime;         // Час до наступного спавну
-
-    private PlayerUltimate playerUltimate;
-    private TowerScroller towerController;
-
-    void Start()
+    protected override void Spawn()
     {
-        playerUltimate = GameObject.FindWithTag("Player").GetComponent<PlayerUltimate>();
-        towerController = GameObject.FindWithTag("Tower Scroller").GetComponent<TowerScroller>();
-        // Встановлюємо перший випадковий інтервал
-        nextSpawnTime = Random.Range(minSpawnInterval, maxSpawnInterval);
-    }
+        bool left = Random.Range(0, 2) == 0;
+        float spawnX = left ? -zoneWidth / 2 : zoneWidth / 2;
+        Vector3 spawnPos = new Vector3(spawnX, transform.position.y + spawnOffsetY, 0);
 
-    void Update()
-    {
-        nextSpawnTime -= Time.deltaTime;
+        GameObject obj = Instantiate(prefab, spawnPos, Quaternion.identity);
 
-        if (playerUltimate.UltimateActivated != ultimateWasActive)
+        if (!left)
         {
-            ultimateWasActive = playerUltimate.UltimateActivated;
-            // Оновлюємо інтервал для наступного спавну
-            SetNextSpawnTime();
+            obj.transform.rotation = Quaternion.Euler(0, 180, 0);
         }
 
-        if (nextSpawnTime <= 0)
+        var move = obj.GetComponent<ObstacleMovement>();
+        if (move != null)
         {
-            SpawnObstacle();
-            SetNextSpawnTime();
-        }
-    }
-
-    void SetNextSpawnTime()
-    {
-        float baseInterval = Random.Range(minSpawnInterval, maxSpawnInterval);
-        nextSpawnTime = ultimateWasActive ? baseInterval / towerController.speedMultiplier : baseInterval;
-    }
-
-    void SpawnObstacle()
-    {
-        // Вибір сторони (ліво чи право)
-        bool spawnOnLeft = Random.Range(0, 2) == 0;
-
-        // Визначаємо X-позицію для спавну
-        float spawnX = spawnOnLeft ? -zoneWidth / 2 : zoneWidth / 2;
-
-        // Позиція спавну вище екрану
-        Vector3 spawnPosition = new Vector3(spawnX, transform.position.y + spawnOffsetY, 0);
-
-        // Створюємо перешкоду
-        GameObject obstacle = Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity);
-
-        if (!spawnOnLeft)
-        {
-            obstacle.transform.rotation = Quaternion.Euler(0, 180, 0);
-        }
-
-        // Передаємо швидкість руху
-        ObstacleMovement movement = obstacle.GetComponent<ObstacleMovement>();
-        if (movement != null)
-        {
-            movement.multiplier = 1.0f;
+            move.multiplier = 1.0f;
         }
     }
 }

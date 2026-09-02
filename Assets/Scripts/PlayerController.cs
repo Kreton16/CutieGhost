@@ -43,12 +43,13 @@ public class PlayerController : MonoBehaviour
 
     // Variables for distance counter and display
     [Header("UI Settings")]
-    private float distance;
     [SerializeField] private float recordDistance;
+    private float distance;
     TowerScroller towerController;
     [SerializeField] private GameObject towerScroller;
     [SerializeField] private GameOverScreen GameOverScreen;
     [SerializeField] private TextMeshProUGUI currentDistance;
+    [SerializeField] private TextMeshProUGUI currentCurrency;
     public float RecordDistance => recordDistance;
 
     // Animation
@@ -74,6 +75,8 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Souls: " + currentPoints + "/" + maxPoints);
 
         UpdateGhostState();
+
+        DisplayCurrency(currencySouls);
     }
 
     // Update is called once per frame
@@ -132,7 +135,7 @@ public class PlayerController : MonoBehaviour
             if (stateInfo.IsName("Death") && stateInfo.normalizedTime >= 1.0f)
             { 
 
-                GameOverScreen.Setup(recordDistance);
+                GameOverScreen.Setup(distance, recordDistance, currencySouls);
                 GameOverScreen.Instance.Pause();
 
                 Destroy(gameObject);
@@ -197,7 +200,12 @@ public class PlayerController : MonoBehaviour
 
     public void DisplayDistance(float score)
     {
-        currentDistance.text = "Distance: " + score.ToString() + $" ({recordDistance})";
+        currentDistance.text = "Score: " + score.ToString() + $" ({recordDistance})";
+    }
+
+    public void DisplayCurrency(float currency)
+    {
+        currentCurrency.text = "Currency: " + currency.ToString();
     }
 
     public void AddPoints(int amount)
@@ -243,6 +251,7 @@ public class PlayerController : MonoBehaviour
         }
 
         currencySouls += amount;
+        DisplayCurrency(currencySouls);
         Debug.Log(currencySouls);
     }
 

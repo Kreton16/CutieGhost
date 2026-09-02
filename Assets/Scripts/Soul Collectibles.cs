@@ -36,7 +36,7 @@ public class SoulCollectibles : MonoBehaviour
         {
             if (gameObject.CompareTag("Currency"))
             {
-                currencySpawner.SpawnSoul();
+                currencySpawner.CallSpawnExternally();
             }
             //Debug.Log($"Душа {gameObject.name} знищена хрестом {other.name}");
             Destroy(gameObject);

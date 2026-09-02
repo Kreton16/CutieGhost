@@ -49,7 +49,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -87,7 +87,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -247,7 +247,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      GHOST MOVEMENT (SIDE DIAGONAL) (LOWRST FORM_0: 3580526180678728940
+      GHOST MOVEMENT (SIDE DIAGONAL) (LOWRST FORM_1: -1584064534929343833
+      GHOST MOVEMENT (SIDE DIAGONAL) (LOWRST FORM_2: -1792453801515965506
+      GHOST MOVEMENT (SIDE DIAGONAL) (LOWRST FORM_3: -7276416807187358071
+      GHOST MOVEMENT (SIDE DIAGONAL) (LOWRST FORM_4: -4066075543714937093
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

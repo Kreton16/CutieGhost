@@ -10,8 +10,11 @@ public class GameOverScreen : MonoBehaviour
 
     [SerializeField] GameObject deathMenu;
     [SerializeField] GameObject pauseButton;
+    [SerializeField] GameObject sessionStatsBox;
     public static GameOverScreen Instance;
-    public TextMeshProUGUI recordDistance;
+    [SerializeField] private TextMeshProUGUI score;
+    [SerializeField] private TextMeshProUGUI bestScore;
+    [SerializeField] private TextMeshProUGUI currencySouls;
     private PlayerController playerController;
 
     public void Start()
@@ -25,15 +28,19 @@ public class GameOverScreen : MonoBehaviour
         Instance = this;
     }
 
-    public void Setup(float score)
+    public void Setup(float distance, float record, float currency)
     {
-        recordDistance.text = score.ToString() + " meters";
+        score.text = "Score: " + distance.ToString() + " m";
+        bestScore.text = "Best Score: " + record.ToString() + " m";
+        currencySouls.text = "Currency: " + currency.ToString();
     }
 
     public void Pause()
     {
         deathMenu.SetActive(true);
         pauseButton.SetActive(false);
+        sessionStatsBox.SetActive(false);
+
 
         foreach (Animator animator in FindObjectsByType<Animator>(FindObjectsSortMode.None))
         {

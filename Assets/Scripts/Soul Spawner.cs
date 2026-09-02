@@ -1,68 +1,18 @@
 using UnityEngine;
 
-public class SoulSpawner : MonoBehaviour
+public class SoulSpawner : BaseSpawner
 {
-    public GameObject soulPrefab;  // Префаб перешкоди
-    public float minSpawnInterval = 1.0f; // Мінімальний інтервал спавну
-    public float maxSpawnInterval = 3.0f; // Максимальний інтервал спавну
-    public float zoneWidth = 6f;        // Ширина ігрової зони
-    public float spawnOffsetY = 15.0f;   // Відстань спавну вище екрану
-
-    private bool ultimateWasActive = false;
-    private float nextSpawnTime;         // Час до наступного спавну
-
-    private PlayerUltimate playerUltimate;
-    private TowerScroller towerController;
-
-    void Start()
+    protected override void Spawn()
     {
-        playerUltimate = GameObject.FindWithTag("Player").GetComponent<PlayerUltimate>();
-        towerController = GameObject.FindWithTag("Tower Scroller").GetComponent<TowerScroller>();
-        // Встановлюємо перший випадковий інтервал
-        nextSpawnTime = Random.Range(minSpawnInterval, maxSpawnInterval);
-    }
-
-    void Update()
-    {
-        nextSpawnTime -= Time.deltaTime;
-
-        if (playerUltimate.UltimateActivated != ultimateWasActive)
-        {
-            ultimateWasActive = playerUltimate.UltimateActivated;
-            // Оновлюємо інтервал для наступного спавну
-            SetNextSpawnTime();
-        }
-
-        if (nextSpawnTime <= 0)
-        {
-            SpawnSoul();
-            SetNextSpawnTime();
-        }
-    }
-
-    void SetNextSpawnTime()
-    {
-        float baseInterval = Random.Range(minSpawnInterval, maxSpawnInterval);
-        nextSpawnTime = ultimateWasActive ? baseInterval / towerController.speedMultiplier : baseInterval;
-    }
-
-    void SpawnSoul()
-    {
-        // Визначаємо X-позицію для спавну
         float spawnX = Random.Range(-zoneWidth / 2, zoneWidth / 2);
+        Vector3 spawnPos = new Vector3(spawnX, transform.position.y + spawnOffsetY, 0);
 
-        // Позиція спавну вище екрану
-        Vector3 spawnPosition = new Vector3(spawnX, transform.position.y + spawnOffsetY, 0);
+        GameObject obj = Instantiate(prefab, spawnPos, Quaternion.identity);
 
-        // Створюємо перешкоду
-        GameObject soul = Instantiate(soulPrefab, spawnPosition, Quaternion.identity);
-
-        // Передаємо швидкість руху
-        ObstacleMovement movement = soul.GetComponent<ObstacleMovement>();
-        if (movement != null)
+        var move = obj.GetComponent<ObstacleMovement>();
+        if (move != null)
         {
-            movement.multiplier = 1.0f;
+            move.multiplier = 1.0f;
         }
     }
-
 }
