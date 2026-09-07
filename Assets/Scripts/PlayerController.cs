@@ -132,9 +132,10 @@ public class PlayerController : MonoBehaviour
             SavePlayer();
             MoveAction.Disable();
             animator.Play("Death");
+            MusicManager.Instance.PlayMusic("GameOver");
             if (stateInfo.IsName("Death") && stateInfo.normalizedTime >= 1.0f)
-            { 
-
+            {
+                playerUltimate.UltimateParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                 GameOverScreen.Setup(distance, recordDistance, currencySouls);
                 GameOverScreen.Instance.Pause();
 

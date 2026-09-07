@@ -12,11 +12,13 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] GameObject pauseButton;
     private bool isPaused = false;
     private PlayerController playerController;
-    [SerializeField]
-    private GameObject optionsMenu;
+    [SerializeField] private GameObject optionsMenu;
+    private MainMenuManager manager;
 
     public void Start()
     {
+        manager = FindAnyObjectByType<MainMenuManager>();
+
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>(); // «найти контролер гравц€
         Debug.Log("PlayerController in Start: " + playerController);
     }
@@ -106,7 +108,8 @@ public class PauseMenu : MonoBehaviour
         playerController.SavePlayer();
 
         FindAnyObjectByType<MusicManager>().DisableLowPass();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        manager.PlayGame();
         Time.timeScale = 1.0f;
     }
 

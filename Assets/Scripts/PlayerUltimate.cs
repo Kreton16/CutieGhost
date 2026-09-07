@@ -11,21 +11,27 @@ public class PlayerUltimate : MonoBehaviour
     [Header("Ultimate Settings")]
     [SerializeField] private InputAction ultimateAction;
     [SerializeField] private int ultimateCost;
-    [SerializeField] private float ultimateDuration;
+    [SerializeField] private float _ultimateDuration = 6f;
     [SerializeField] private float holdTime = 1.0f;
+    [SerializeField] private ParticleSystem _ultimateParticles;
 
     private float holdTimer;
     private bool isChargingUltimate = false;
     private bool ultimateActivated = false;
 
+    public int UltimateCost => ultimateCost;
     public bool UltimateActivated => ultimateActivated;
-    public float UltimateDuration => ultimateDuration;
+    public float UltimateDuration => _ultimateDuration;
+    public ParticleSystem UltimateParticles => _ultimateParticles;
 
     private void Start()
     {
         ultimateAction.Enable();
         ultimateAction.started += ctx => StartUltimate();
         ultimateAction.canceled += ctx => StopUltimate();
+
+        var main = _ultimateParticles.main;
+        main.duration = _ultimateDuration;
     }
 
     private void Update()
@@ -38,17 +44,16 @@ public class PlayerUltimate : MonoBehaviour
 
     private void StartUltimate()
     {
-        if (ultimateCost < playerController.points)
+        if (ultimateCost < playerController.points && !ultimateActivated)
         {
             Debug.Log("Ultimate Charge Started!");
             isChargingUltimate = true;
-            ultimateActivated = false;
             holdTimer = 0f;
             SoundManager.Instance.PlaySound3D("UltCharge", transform.position, true);
         }
         else
         {
-            Debug.Log("Not enough souls!");
+            Debug.Log("Couldn't start charging!");
         }
     }
 
@@ -79,6 +84,10 @@ public class PlayerUltimate : MonoBehaviour
         CostChange();
         towerScroller.ChangeSpeed();
         StartCoroutine(TurnUltimateOff());
+
+        //Particle start
+        _ultimateParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        _ultimateParticles.Play();
     }
 
     private void StopUltimate()
@@ -99,7 +108,7 @@ public class PlayerUltimate : MonoBehaviour
 
     private IEnumerator TurnUltimateOff()
     {
-        yield return new WaitForSeconds(ultimateDuration);
+        yield return new WaitForSeconds(_ultimateDuration);
         ultimateActivated = false;
         SoundManager.Instance.StopSound("UltActive");
     }
