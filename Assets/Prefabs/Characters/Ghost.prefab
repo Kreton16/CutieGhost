@@ -155,11 +155,13 @@ MonoBehaviour:
       m_Flags: 8
     m_Flags: 0
   rigidbody2d: {fileID: -1308632608659690604}
-  speed: 6
+  speed: 5
   move: {x: 0, y: 0}
   playerUltimate: {fileID: 888954576528192851}
-  timeSlowed: 1.6
-  maxPoints: 10
+  timeSlowed: 2
+  maxPoints: 100
+  capacityIncrease: 20
+  distanceForCapacityIncrease: 3500
   currentPoints: 0
   currencySouls: 0
   timeInvincible: 1.5
@@ -201,10 +203,11 @@ MonoBehaviour:
       m_Action: Ultimate
       m_Flags: 0
     m_Flags: 0
-  ultimateCost: 3
+  ultimateCost: 35
+  _ultimateCostIncrease: 20
   _ultimateDuration: 6
   holdTime: 1.5
-  _ultimateParticles: {fileID: 0}
+  _ultimateParticles: {fileID: 1213333942506464931}
 --- !u!50 &-1308632608659690604
 Rigidbody2D:
   serializedVersion: 5
@@ -303,6 +306,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerUltimate
       objectReference: {fileID: 0}
+    - target: {fileID: 368771001694464097, guid: ad0434ccad0d43e48a449fb5588b4e49, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 681351646386282132, guid: ad0434ccad0d43e48a449fb5588b4e49, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -344,12 +351,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1552437734950619797, guid: ad0434ccad0d43e48a449fb5588b4e49, type: 3}
+      propertyPath: stopAction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1552437734950619797, guid: ad0434ccad0d43e48a449fb5588b4e49, type: 3}
       propertyPath: lengthInSec
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2580993331310195410, guid: ad0434ccad0d43e48a449fb5588b4e49, type: 3}
+      propertyPath: m_SortingLayer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2580993331310195410, guid: ad0434ccad0d43e48a449fb5588b4e49, type: 3}
       propertyPath: m_SortingOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2580993331310195410, guid: ad0434ccad0d43e48a449fb5588b4e49, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 526454511
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -359,5 +378,10 @@ PrefabInstance:
 --- !u!4 &876329019394110114 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 681351646386282132, guid: ad0434ccad0d43e48a449fb5588b4e49, type: 3}
+  m_PrefabInstance: {fileID: 386743524594379830}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1213333942506464931 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1552437734950619797, guid: ad0434ccad0d43e48a449fb5588b4e49, type: 3}
   m_PrefabInstance: {fileID: 386743524594379830}
   m_PrefabAsset: {fileID: 0}

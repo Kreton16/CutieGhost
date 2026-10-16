@@ -350,10 +350,13 @@ MonoBehaviour:
     - {fileID: 8300000, guid: d31028beb25d8354096528c2cbf46446, type: 3}
   - groupID: UltCharge
     clips:
-    - {fileID: 8300000, guid: 10ac2f516f6373e42961dd6c3f9d82c6, type: 3}
+    - {fileID: 8300000, guid: 23074580a6d599940907f563a124e6c1, type: 3}
   - groupID: UltActive
     clips:
-    - {fileID: 8300000, guid: 04fb64aaefe62754b956c3f49b483980, type: 3}
+    - {fileID: 8300000, guid: 64d2935050e2a2449a0a9a1c2df31698, type: 3}
+  - groupID: UltEnd
+    clips:
+    - {fileID: 8300000, guid: ae0b985015e7b8f4cb4b84185d5af8d4, type: 3}
 --- !u!114 &7200574065702621628
 MonoBehaviour:
   m_ObjectHideFlags: 0

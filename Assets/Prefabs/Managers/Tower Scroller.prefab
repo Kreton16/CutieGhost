@@ -46,12 +46,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerPrefab: {fileID: 8709991617604725940, guid: dd4725b073181534a919e8d08ca32869, type: 3}
   towers:
-  - {fileID: 21300000, guid: 8c55c2094bb5bc4438d61eaa83a6a6d5, type: 3}
-  - {fileID: 21300000, guid: 6580d3cff9790a24082f0119d2006d69, type: 3}
-  - {fileID: 21300000, guid: f90f9df02e754a94199c3c96bf859318, type: 3}
-  - {fileID: 21300000, guid: e145dcd6ad246f649b08fc704911e65a, type: 3}
+  - {fileID: 21300000, guid: a531d9651cafa6b418b452d9f78468db, type: 3}
+  - {fileID: 21300000, guid: 4ddc92474fe464945ae0f4910a194635, type: 3}
+  - {fileID: 21300000, guid: a578c65778a6f1143a2222af26a1af37, type: 3}
+  - {fileID: 21300000, guid: 89a511bd02a32c940a8a6a2f3421f42f, type: 3}
+  - {fileID: 21300000, guid: 8d477f467f1beed4795c132a0bd09d98, type: 3}
+  - {fileID: 21300000, guid: 2f6071045661d1245b5fb93f44768d22, type: 3}
+  - {fileID: 21300000, guid: 7a767f666b2892d4489a43f9cecbf879, type: 3}
+  - {fileID: 21300000, guid: e18c210f383d7f54a84be8500c0556a3, type: 3}
   towerScrollSpeed: 1
   accelerationRate: 0.1
   maximalSpeed: 4.04
-  speedMultiplier: 5
-  playerController: {fileID: -8014618784825750895, guid: 8ada42d160b580d4c835885c9644dc00, type: 3}
+  speedMultiplier: 12
