@@ -16,7 +16,7 @@ public class SoulCollectibles : MonoBehaviour
         if (playerController != null && playerController.points < playerController.MaxPoints && gameObject.CompareTag("Soul"))
         {
             SoundManager.Instance.PlaySound3D("Collectibles", transform.position);
-            playerController.AddPoints(1);
+            playerController.AddPoints(5);
             Destroy(gameObject);
         }
         else

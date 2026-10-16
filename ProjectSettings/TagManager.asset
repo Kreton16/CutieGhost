@@ -46,5 +46,26 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 1477415775
+    locked: 0
+  - name: Tower
+    uniqueID: 3674026979
+    locked: 0
+  - name: Decoration
+    uniqueID: 3995423339
+    locked: 0
+  - name: Collectable
+    uniqueID: 1782208737
+    locked: 0
+  - name: Player
+    uniqueID: 526454511
+    locked: 0
+  - name: Obstacle
+    uniqueID: 4151514577
+    locked: 0
+  - name: UI
+    uniqueID: 1577564837
+    locked: 0
   m_RenderingLayers:
   - Default

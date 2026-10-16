@@ -3,15 +3,18 @@ using UnityEngine;
 
 public class TowerScroller : MonoBehaviour
 {
-    public GameObject towerPrefab;
-    public Sprite[] towers;
-    public float towerScrollSpeed = 1.0f;
-    public float accelerationRate = 0.1f;
-    public float maximalSpeed = 4.04f;
+    [SerializeField] private GameObject towerPrefab;
+    [SerializeField] private Sprite[] towers;
+    [SerializeField] private float towerScrollSpeed = 1.0f;
+    [SerializeField] private float accelerationRate = 0.1f;
+    [SerializeField] private float maximalSpeed = 4.04f;
     private float updateInterval = 0.02f; // Оновлення кожні 20 мс (~50 разів на секунду)
     private float nextUpdateTime = 0f;
     private float previousSpeed;
-    public float speedMultiplier = 5.0f;
+    [SerializeField] private float speedMultiplier = 5.0f;
+
+    public float TowerScrollSpeed => towerScrollSpeed;
+    public float SpeedMultiplier => speedMultiplier;
 
     private PlayerUltimate playerUltimate;
     private GameObject currentZone;
@@ -95,7 +98,6 @@ public class TowerScroller : MonoBehaviour
 
     public void ChangeSpeed()
     {
-        Debug.Log("AHUETb");
         previousSpeed = towerScrollSpeed;
         towerScrollSpeed *= speedMultiplier;
         Invoke(nameof(TurnUltimateOff), playerUltimate.UltimateDuration);
@@ -103,7 +105,6 @@ public class TowerScroller : MonoBehaviour
 
     void TurnUltimateOff()
     {
-        Debug.Log("PIZDAAA");
         towerScrollSpeed = previousSpeed;
     }
 }

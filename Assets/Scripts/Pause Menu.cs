@@ -20,7 +20,6 @@ public class PauseMenu : MonoBehaviour
         manager = FindAnyObjectByType<MainMenuManager>();
 
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>(); // «найти контролер гравц€
-        Debug.Log("PlayerController in Start: " + playerController);
     }
 
     private void Update()
@@ -50,7 +49,7 @@ public class PauseMenu : MonoBehaviour
     public void Pause()
     {
         isPaused = true;
-        Debug.Log(isPaused);
+        //Debug.Log(isPaused);
         pauseMenu.SetActive(true);
         pauseButton.SetActive(false);
 
@@ -67,13 +66,15 @@ public class PauseMenu : MonoBehaviour
         }
 
         Time.timeScale = 0.0f;
+        SoundManager.Instance.PauseSFX();
     }
 
     public void Resume()
     {
         Time.timeScale = 1.0f;
+        SoundManager.Instance.ResumeSFX();
         isPaused = false;
-        Debug.Log(isPaused);
+        //Debug.Log(isPaused);
         pauseMenu.SetActive(false);
         pauseButton.SetActive(true);
         foreach (Animator animator in FindObjectsByType<Animator>(FindObjectsSortMode.None))
@@ -98,15 +99,16 @@ public class PauseMenu : MonoBehaviour
     {
         playerController.SavePlayer();
 
+        SoundManager.Instance.StopAllSFX();
         FindAnyObjectByType<MusicManager>().DisableLowPass();
-        SceneManager.LoadScene("MainMenu");
-        Time.timeScale = 1.0f;
+        SceneFader.Instance.LoadScene("MainMenu");
     }
 
     public void Restart()
     {
         playerController.SavePlayer();
 
+        SoundManager.Instance.StopAllSFX();
         FindAnyObjectByType<MusicManager>().DisableLowPass();
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         manager.PlayGame();

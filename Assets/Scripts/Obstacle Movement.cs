@@ -14,7 +14,7 @@ public class ObstacleMovement : MonoBehaviour
 
     void Update()
     {
-        moveSpeed = towerController.towerScrollSpeed * multiplier;
+        moveSpeed = towerController.TowerScrollSpeed * multiplier;
         //Debug.Log(towerController.towerScrollSpeed);
         // –ух вниз
         transform.position -= new Vector3(0, moveSpeed * Time.deltaTime, 0);

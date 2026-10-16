@@ -8,8 +8,8 @@ public abstract class BaseSpawner : MonoBehaviour
     [SerializeField] protected float maxSpawnInterval = 3.0f;
     [SerializeField] protected float zoneWidth = 6.0f;
     [SerializeField] protected float spawnOffsetY = 15.0f;
+    [SerializeField] private float spawnSpeedInfluence = 0.4f;
 
-    protected bool ultimateWasActive = false;
     protected float nextSpawnTime;
 
     protected PlayerUltimate playerUltimate;
@@ -27,23 +27,26 @@ public abstract class BaseSpawner : MonoBehaviour
     {
         nextSpawnTime -= Time.deltaTime;
 
-        if (playerUltimate.UltimateActivated != ultimateWasActive)
-        {
-            ultimateWasActive = playerUltimate.UltimateActivated;
-            SetNextSpawnTime();
-        }
-
         if (nextSpawnTime <= 0)
         {
-            Spawn();
+            if (!playerUltimate.UltimateActivated)
+            {
+                Spawn();
+            }
             SetNextSpawnTime();
         }
     }
 
     protected void SetNextSpawnTime()
     {
-        float baseInterval = Random.Range(minSpawnInterval, maxSpawnInterval);
-        nextSpawnTime = ultimateWasActive ? baseInterval / towerController.speedMultiplier : baseInterval;
+        float speedRatio = towerController.TowerScrollSpeed / 1f;
+
+        float multiplier = 1f + (speedRatio - 1f) * spawnSpeedInfluence;
+
+        float currentMinInterval = minSpawnInterval / multiplier;
+        float currentMaxInterval = maxSpawnInterval / multiplier;
+        float baseInterval = Random.Range(currentMinInterval, currentMaxInterval);
+        nextSpawnTime = baseInterval;
     }
 
     protected abstract void Spawn();

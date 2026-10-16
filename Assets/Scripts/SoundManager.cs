@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
 
-    [SerializeField]
-    private SoundLibrary sfxLibrary;
-    [SerializeField]
-    private AudioSource sfx2DSource;
+    [SerializeField] private SoundLibrary sfxLibrary;
+    [SerializeField] private AudioSource sfx2DSource;
+    [SerializeField] private AudioSource uiSource;
+    [SerializeField] private AudioMixer audioMixer;
+
+    private bool isSFXPaused;
+    private float sfxVolume = 0f;
+    private const string SFX_VOLUME = "SFXVolume";
 
     private Dictionary<string, AudioSource> playingLoops = new Dictionary<string, AudioSource>();
 
@@ -26,6 +31,10 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public float GetSFXVolume()
+    {
+        return sfxVolume;
+    }
     public void PlaySound2D(string soundName)
     {
         sfx2DSource.PlayOneShot(sfxLibrary.GetClipFromName(soundName));
@@ -59,6 +68,57 @@ public class SoundManager : MonoBehaviour
         }
 
         return source;
+    }
+
+    public void PlayUISound(string soundName)
+    {
+        AudioClip clip = sfxLibrary.GetClipFromName(soundName);
+
+        if (clip == null)
+        {
+            Debug.LogWarning($"UI sound '{soundName}' not found!");
+            return;
+        }
+
+        uiSource.PlayOneShot(clip);
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        sfxVolume = volume;
+
+        if (!isSFXPaused)
+            audioMixer.SetFloat("SFXVolume", volume);
+    }
+
+    public void PauseSFX()
+    {
+        if (isSFXPaused)
+            return;
+
+        isSFXPaused = true;
+        audioMixer.SetFloat("SFXVolume", -80f);
+    }
+
+    public void ResumeSFX()
+    {
+        if (!isSFXPaused)
+            return;
+
+        isSFXPaused = false;
+        audioMixer.SetFloat("SFXVolume", sfxVolume);
+    }
+
+    public void StopAllSFX()
+    {
+        isSFXPaused = false;
+        audioMixer.SetFloat("SFXVolume", sfxVolume);
+        sfx2DSource.Stop();
+
+        if (AudioSourcePool.Instance != null)
+            AudioSourcePool.Instance.StopAll();
+
+        playingLoops.Clear();
     }
 
     public void StopSound(string soundName)

@@ -22,7 +22,7 @@ public class MainMenuManager : MonoBehaviour
     public void PlayGame()
     {
         // Замініть "GameScene" на назву твоєї ігрової сцени!
-        SceneManager.LoadScene("MainScene");
+        SceneFader.Instance.LoadScene("MainScene");
         MusicManager.Instance.PlayMusic("Game");
     }
 
@@ -38,21 +38,25 @@ public class MainMenuManager : MonoBehaviour
 
     public void UpdateSoundVolume(float volume)
     {
-        audioMixer.SetFloat("SFXVolume", volume);
+        SoundManager.Instance.SetSFXVolume(volume);
     }
 
     public void SaveVolume()
     {
-        audioMixer.GetFloat("MusicVolume", out float musicVolume);
-        PlayerPrefs.SetFloat("MusicVolume", musicVolume);
-
-        audioMixer.GetFloat("SFXVolume", out float sfxVolume);
-        PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
+        PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
+        PlayerPrefs.SetFloat("SFXVolume", sfxSlider.value);
+        PlayerPrefs.Save();
     }
 
     public void LoadVolume()
     {
-        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
-        sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume");
+        float musicVol = PlayerPrefs.GetFloat("MusicVolume", 0f);
+        float sfxVol = PlayerPrefs.GetFloat("SFXVolume", 0f);
+
+        musicSlider.value = musicVol;
+        sfxSlider.value = sfxVol;
+
+        audioMixer.SetFloat("MusicVolume", musicVol);
+        SoundManager.Instance.SetSFXVolume(sfxVol);
     }
 }

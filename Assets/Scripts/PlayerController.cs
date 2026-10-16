@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Xml.Serialization;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -22,11 +23,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerUltimate playerUltimate;
 
     // Variables for slow down
-    [SerializeField] private float timeSlowed;
+    [SerializeField] private float timeSlowed = 2.0f;
 
-    // Variables for soul system
-    [Header("Collectibles Settings")]
+    //Variables for souls
+    [Header("Soul Capacity")]
     [SerializeField] private int maxPoints = 100;
+    [SerializeField] private int capacityIncrease = 10;
+    [SerializeField] private int distanceForCapacityIncrease = 1000;
+    private int distanceForCapacityIncreaseConstant = 1000;
     [SerializeField] private int currentPoints;
     public int points { get { return currentPoints; } }
     [SerializeField] private int currencySouls;
@@ -45,15 +49,17 @@ public class PlayerController : MonoBehaviour
     [Header("UI Settings")]
     [SerializeField] private float recordDistance;
     private float distance;
-    TowerScroller towerController;
+    [SerializeField] private TowerScroller towerController;
     [SerializeField] private GameObject towerScroller;
     [SerializeField] private GameOverScreen GameOverScreen;
     [SerializeField] private TextMeshProUGUI currentDistance;
     [SerializeField] private TextMeshProUGUI currentCurrency;
+    [SerializeField] private SoulBarUI soulBarUI;
     public float RecordDistance => recordDistance;
 
     // Animation
-    Animator animator;
+    private Animator animator;
+    public Animator Animator => animator;
     Vector2 moveDirection = new Vector2(1, 0);
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -71,10 +77,11 @@ public class PlayerController : MonoBehaviour
 
         animator = GetComponent<Animator>();
 
-        currentPoints = Mathf.RoundToInt(maxPoints / 2);
-        Debug.Log("Souls: " + currentPoints + "/" + maxPoints);
+        currentPoints = Mathf.RoundToInt(maxPoints * 0.4f);
+        //Debug.Log("Souls: " + currentPoints + "/" + maxPoints);
 
         UpdateGhostState();
+        soulBarUI.UpdateBarState();
 
         DisplayCurrency(currencySouls);
     }
@@ -113,39 +120,6 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("IsTurning", false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            SavePlayer();
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Debug.Log("Currency: " + currencySouls);
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Debug.Log("Record Distance: " + recordDistance);
-        }
-
-        //Restart if there're no souls
-        if (currentPoints <= 0)
-        {
-            SavePlayer();
-            MoveAction.Disable();
-            animator.Play("Death");
-            MusicManager.Instance.PlayMusic("GameOver");
-            if (stateInfo.IsName("Death") && stateInfo.normalizedTime >= 1.0f)
-            {
-                playerUltimate.UltimateParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-                GameOverScreen.Setup(distance, recordDistance, currencySouls);
-                GameOverScreen.Instance.Pause();
-
-                Destroy(gameObject);
-
-            }
-            
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
-
         InvincibilityTimer();
     }
 
@@ -154,6 +128,25 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 position = (Vector2)rigidbody2d.position + move * speed * Time.deltaTime;
         rigidbody2d.MovePosition(position);
+    }
+
+    private void PlayerDeath()
+    {
+        SavePlayer();
+        MoveAction.Disable();
+        animator.Play("Death");
+        MusicManager.Instance.PlayMusic("GameOver");
+
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void FinishDeath()
+    {
+        playerUltimate.UltimateParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        GameOverScreen.Setup(distance, recordDistance, currencySouls);
+        GameOverScreen.Instance.Pause();
+
+        Destroy(gameObject);
     }
 
     public void SavePlayer()
@@ -191,9 +184,10 @@ public class PlayerController : MonoBehaviour
             distance += 10;
             recordDistance = Mathf.Max(recordDistance, distance);
 
+            CheckSoulCapacity();
             DisplayDistance(distance);
 
-            float interval = 1 / towerController.towerScrollSpeed;
+            float interval = 1 / towerController.TowerScrollSpeed;
             yield return new WaitForSeconds(interval);
         }
 
@@ -209,6 +203,18 @@ public class PlayerController : MonoBehaviour
         currentCurrency.text = "Currency: " + currency.ToString();
     }
 
+    private void CheckSoulCapacity()
+    {
+        if (distance >= distanceForCapacityIncrease)
+        {
+            maxPoints += capacityIncrease;
+            distanceForCapacityIncrease += distanceForCapacityIncreaseConstant;
+            soulBarUI.UpdateBarState();
+
+            //Debug.Log($"Soul capacity increased: {maxPoints}");
+        }
+    }
+
     public void AddPoints(int amount)
     {
         if (amount <= 0)
@@ -218,8 +224,9 @@ public class PlayerController : MonoBehaviour
         }
 
         currentPoints = Mathf.Clamp(currentPoints + amount, 0, maxPoints);
+        soulBarUI.UpdateBarState();
         UpdateGhostState();
-        Debug.Log(currentPoints + "/" + maxPoints);
+        //Debug.Log(currentPoints + "/" + maxPoints);
     }
 
     public void RemovePoints(int amount)
@@ -230,17 +237,25 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (isInvincible || playerUltimate.UltimateActivated) return;
-
         isInvincible = true;
         damageCooldown = timeInvincible;
         currentPoints = Mathf.Clamp(currentPoints - amount, 0, maxPoints);
+        soulBarUI.UpdateBarState();
 
-        SoundManager.Instance.PlaySound3D("Damage", transform.position);
-        animator.Play("Damage_" + currentState);
+        if (currentPoints <= 0)
+        {
+            PlayerDeath();
+            return;
+        }
+
+        if (!playerUltimate.UltimateActivated)
+        {
+            SoundManager.Instance.PlaySound3D("Damage", transform.position);
+            animator.Play("Damage_" + currentState);
+        }
 
         UpdateGhostState();
-        Debug.Log(currentPoints + "/" + maxPoints);
+        //Debug.Log(currentPoints + "/" + maxPoints);
     }
 
     public void AddCurrency(int amount)
@@ -253,7 +268,7 @@ public class PlayerController : MonoBehaviour
 
         currencySouls += amount;
         DisplayCurrency(currencySouls);
-        Debug.Log(currencySouls);
+        //Debug.Log(currencySouls);
     }
 
     public void UpdateGhostState()
@@ -280,20 +295,21 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void ChangeSpeed(float multiplier)
+    public void ChangeSpeed(float multiplier, float time)
     {
 
         // Damage speed decrease
         if (multiplier < 1.0f)
         {
-            if (isInvincible || playerUltimate.UltimateActivated)
-            {
-                return;
-            }
             speed *= multiplier; // Зменшуємо швидкість у n разів
-            Invoke(nameof(RestoreSpeed), timeSlowed); // Викликаємо відновлення швидкості через деякий час
+            Invoke(nameof(RestoreSpeed), time); // Викликаємо відновлення швидкості через деякий час
         }
 
+    }
+
+    public void ChangeSpeed(float multiplier)
+    {
+        ChangeSpeed(multiplier, timeSlowed);
     }
 
     void RestoreSpeed()

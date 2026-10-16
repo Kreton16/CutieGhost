@@ -14,6 +14,7 @@ public class AudioSourcePool : MonoBehaviour
     [SerializeField] private GameObject audioSourcePrefab; // або генеруємо динамічно
 
     private Queue<AudioSource> pool = new Queue<AudioSource>();
+    private HashSet<AudioSource> activeSources = new HashSet<AudioSource>();
 
     private void Awake()
     {
@@ -60,28 +61,56 @@ public class AudioSourcePool : MonoBehaviour
 
     public AudioSource Get()
     {
+        AudioSource source;
+
         if (pool.Count > 0)
         {
-            AudioSource source = pool.Dequeue();
-            source.gameObject.SetActive(true);
-            return source;
+            source = pool.Dequeue();
         }
         else if (autoExpand)
         {
-            return CreateNewSource();
+            source = CreateNewSource();
         }
         else
         {
             Debug.LogWarning("AudioSourcePool exhausted!");
             return null;
         }
+
+        source.gameObject.SetActive(true);
+        activeSources.Add(source);
+
+        return source;
     }
 
     public void Return(AudioSource source)
     {
+        if (source == null || !activeSources.Remove(source))
+            return;
+
         source.Stop();
         source.clip = null;
+        source.loop = false;
         source.gameObject.SetActive(false);
+
         pool.Enqueue(source);
+    }
+
+    public void StopAll()
+    {
+        foreach (AudioSource source in activeSources)
+        {
+            if (source == null)
+                continue;
+
+            source.Stop();
+            source.clip = null;
+            source.loop = false;
+            source.gameObject.SetActive(false);
+
+            pool.Enqueue(source);
+        }
+
+        activeSources.Clear();
     }
 }

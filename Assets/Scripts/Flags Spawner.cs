@@ -5,6 +5,18 @@ public class FlagsSpawner : BaseSpawner
     public Sprite[] flags;
     private Sprite lastUsedSprite;
 
+    protected override void Update()
+    {
+
+        nextSpawnTime -= Time.deltaTime;
+
+        if (nextSpawnTime <= 0)
+        {
+            Spawn();
+            SetNextSpawnTime();
+        }
+    }
+
     protected override void Spawn()
     {
         bool left = Random.Range(0, 2) == 0;

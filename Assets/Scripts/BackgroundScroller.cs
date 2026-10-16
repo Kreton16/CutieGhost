@@ -32,7 +32,7 @@ public class BackgroundScroller : MonoBehaviour
         }
 
         // ѕерев≥рка чи останн≥й фон дос€г к≥нц€
-        if (backgrounds[backgrounds.Length - 1].position.y <= -10.8)
+        if (backgrounds[backgrounds.Length - 1].position.y <= -21.6)
         {
             backStopScrolling = true;
             return;

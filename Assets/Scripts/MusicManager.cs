@@ -36,7 +36,7 @@ public class MusicManager : MonoBehaviour
         float percent = 0;
         while (percent < 1)
         {
-            percent += Time.deltaTime * 1 / fadeDuration;
+            percent += Time.unscaledDeltaTime * 1 / fadeDuration;
             musicSource.volume = Mathf.Lerp(1f, 0, percent);
             yield return null;
         }
@@ -47,7 +47,7 @@ public class MusicManager : MonoBehaviour
         percent = 0;
         while (percent < 1)
         {
-            percent += Time.deltaTime * 1 / fadeDuration;
+            percent += Time.unscaledDeltaTime * 1 / fadeDuration;
             musicSource.volume = Mathf.Lerp(0, 1f, percent);
             yield return null;
         }

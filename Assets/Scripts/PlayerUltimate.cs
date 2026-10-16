@@ -11,6 +11,7 @@ public class PlayerUltimate : MonoBehaviour
     [Header("Ultimate Settings")]
     [SerializeField] private InputAction ultimateAction;
     [SerializeField] private int ultimateCost;
+    [SerializeField] private int _ultimateCostIncrease = 15;
     [SerializeField] private float _ultimateDuration = 6f;
     [SerializeField] private float holdTime = 1.0f;
     [SerializeField] private ParticleSystem _ultimateParticles;
@@ -46,14 +47,14 @@ public class PlayerUltimate : MonoBehaviour
     {
         if (ultimateCost < playerController.points && !ultimateActivated)
         {
-            Debug.Log("Ultimate Charge Started!");
+            //Debug.Log("Ultimate Charge Started!");
             isChargingUltimate = true;
             holdTimer = 0f;
             SoundManager.Instance.PlaySound3D("UltCharge", transform.position, true);
         }
         else
         {
-            Debug.Log("Couldn't start charging!");
+            //Debug.Log("Couldn't start charging!");
         }
     }
 
@@ -64,7 +65,9 @@ public class PlayerUltimate : MonoBehaviour
             holdTimer += Time.deltaTime;
             if (holdTimer >= holdTime)
             {
-                playerController.RemovePoints(ultimateCost);
+                CostChange();
+                ultimateActivated = true;
+                playerController.RemovePoints(ultimateCost - _ultimateCostIncrease);
                 ActivateUltimate();
                 isChargingUltimate = false;
             }
@@ -77,11 +80,12 @@ public class PlayerUltimate : MonoBehaviour
 
     private void ActivateUltimate()
     {
-        Debug.Log("Ultimate Activated!");
+        playerController.Animator.SetTrigger("UseUlt");
+        playerController.Animator.SetBool("UltActive", true);
+        playerController.ChangeSpeed(0.6f, UltimateDuration);
+        //Debug.Log("Ultimate Activated!");
         SoundManager.Instance.StopSound("UltCharge");
         SoundManager.Instance.PlaySound3D("UltActive", transform.position, true);
-        ultimateActivated = true;
-        CostChange();
         towerScroller.ChangeSpeed();
         StartCoroutine(TurnUltimateOff());
 
@@ -94,7 +98,7 @@ public class PlayerUltimate : MonoBehaviour
     {
         if (!ultimateActivated && isChargingUltimate)
         {
-            Debug.Log("Ultimate canceled - hold longer!");
+            //Debug.Log("Ultimate canceled - hold longer!");
             SoundManager.Instance.StopSound("UltCharge");
         }
 
@@ -103,13 +107,15 @@ public class PlayerUltimate : MonoBehaviour
 
     private void CostChange()
     {
-        ultimateCost = Mathf.Clamp(ultimateCost + 20, 0, playerController.MaxPoints);
+        ultimateCost = Mathf.Clamp(ultimateCost + _ultimateCostIncrease, 0, playerController.MaxPoints);
     }
 
     private IEnumerator TurnUltimateOff()
     {
         yield return new WaitForSeconds(_ultimateDuration);
         ultimateActivated = false;
+        playerController.Animator.SetBool("UltActive", false);
+        SoundManager.Instance.PlaySound3D("UltEnd", transform.position, false);
         SoundManager.Instance.StopSound("UltActive");
     }
 }

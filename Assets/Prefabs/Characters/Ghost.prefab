@@ -79,9 +79,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: 526454511
+  m_SortingLayer: 5
+  m_SortingOrder: 0
   m_Sprite: {fileID: -9140940235405892642, guid: 88841b4640e0b5d45b946a7ad7b0e6fc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -164,10 +164,12 @@ MonoBehaviour:
   currencySouls: 0
   timeInvincible: 1.5
   recordDistance: 0
+  towerController: {fileID: 0}
   towerScroller: {fileID: 0}
   GameOverScreen: {fileID: 0}
   currentDistance: {fileID: 0}
   currentCurrency: {fileID: 0}
+  soulBarUI: {fileID: 0}
 --- !u!114 &888954576528192851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,8 +202,9 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   ultimateCost: 3
-  ultimateDuration: 6
+  _ultimateDuration: 6
   holdTime: 1.5
+  _ultimateParticles: {fileID: 0}
 --- !u!50 &-1308632608659690604
 Rigidbody2D:
   serializedVersion: 5

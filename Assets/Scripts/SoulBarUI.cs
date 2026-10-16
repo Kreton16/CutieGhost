@@ -11,7 +11,7 @@ public class SoulBarUI : MonoBehaviour
 
     private float soulPercent;
 
-    private void Update()
+    public void UpdateBarState()
     {
         soulPercent = UpdateSoulBar(soulPercent);
         UpdateUltimateZone(soulPercent);
